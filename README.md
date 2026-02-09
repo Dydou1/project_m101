@@ -7,6 +7,11 @@ Example : `db/fix/incorrect_character_encoding`
 ## Diagrame de la ville
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart LR
   00
   01
