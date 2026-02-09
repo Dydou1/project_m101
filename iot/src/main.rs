@@ -6,6 +6,8 @@
 use panic_abort as _;
 
 mod support;
+mod types;
+
 use support::exit;
 
 #[unsafe(no_mangle)]
