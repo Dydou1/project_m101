@@ -1,0 +1,14 @@
+services:
+  mqtt:
+    image: bytebeamio/rumqttd
+    ports:
+      - 1883:1883
+      - 1884:1884
+    profiles:
+      - iot
+    # environment:
+
+networks:
+  default:
+
+# volumes:

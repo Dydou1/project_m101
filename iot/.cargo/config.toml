@@ -1,5 +1,1 @@
-[build]
-target = "x86_64-unknown-none"
 
-[target.'cfg(target_os = "linux")']
-rustflags = ["-C", "link-arg=-nostartfiles"]
