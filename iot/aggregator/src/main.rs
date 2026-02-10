@@ -1,35 +1,28 @@
-use std::time::Duration;
+mod db;
+mod graph;
+mod macros;
+mod mqtt;
 
-use rumqttc::{AsyncClient, Event, MqttOptions, Packet, QoS, SubscribeFilter};
+use std::io;
 
-#[tokio::main]
-async fn main() {
-    println!("hello");
-    let mqtt_options = {
-        let mut mqtt_options = MqttOptions::new("aggregator", "mqtt", 1883);
-        mqtt_options
-            .set_keep_alive(Duration::from_secs(15))
-            .set_clean_session(false)
-            .set_inflight(64)
-            .set_request_channel_capacity(64);
-        mqtt_options
-    };
+use actix_web::{App, HttpServer};
+use env_logger::Env;
+use tokio::task;
 
-    let (client, mut event_pool) = AsyncClient::new(mqtt_options, 10);
+#[actix_web::main]
+async fn main() -> io::Result<()> {
+    dotenv::dotenv().expect("env file should exist");
 
-    client
-        .subscribe_many((0..31).map(|i| SubscribeFilter::new(format!("traffic/{i}"), QoS::AtMostOnce)))
+    let env = Env::new().filter_or("LOG_LEVEL", "info");
+    env_logger::builder()
+        .parse_env(env)
+        .format_timestamp(None)
+        .init();
+
+    task::spawn(mqtt::connect());
+
+    HttpServer::new(App::new)
+        .bind(("127.0.0.1", 8080))?
+        .run()
         .await
-        .unwrap();
-
-    while let Ok(notification) = event_pool.poll().await {
-        let Event::Incoming(Packet::Publish(data)) = notification else {
-            continue;
-        };
-
-        // println!("Notification: {notification:?}");
-        println!("Data: {data:?}");
-        println!("Topic: {:?}", data.topic);
-        println!("Payload: {:?}", data.payload.to_vec());
-    }
 }
