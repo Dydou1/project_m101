@@ -1,13 +1,22 @@
 use std::env;
 use std::time::Duration;
 
+use env_logger::Env;
 use rumqttc::{AsyncClient, MqttOptions, QoS};
 use tokio::{task, time};
 
 #[tokio::main]
 async fn main() {
+    // Instantiation of the global logger
+    let env = Env::new().filter_or("LOG_LEVEL", "info");
+    env_logger::builder()
+        .parse_env(env)
+        .format_timestamp(None)
+        .init();
+
+    // Load the sensor's ID from the environement
     let unique_id: u8 = env::var("UNIQUE_ID")
-        .expect("Sensor should be given an ID")
+        .expect("sensor should be given an ID")
         .parse()
         .expect("ID should be a number");
 
@@ -20,24 +29,21 @@ async fn main() {
     let (client, mut event_poll) = AsyncClient::new(mqtt_options, 10);
 
     let topic = format!("traffic/{unique_id}");
-    let result = client.subscribe(topic.clone(), QoS::AtMostOnce).await;
-    if let Err(error) = result {
-        println!("Error: {error}");
-    }
 
     task::spawn(async move {
-        let wait_time = 60;
+        let wait_time = 24;
 
         loop {
-            let avg_speed: u32 = 50;
-            let data = vec![32, avg_speed as u8 /* traffics... */];
+            let avg_speed: u32 = ((unique_id as u32) * 17 % 43) + 10;
+            let data = vec![avg_speed as u8];
 
             let result = client
-                .publish(topic.clone(), QoS::AtLeastOnce, true, data)
+                .publish(topic.clone(), QoS::AtLeastOnce, true, data.clone())
                 .await;
             if let Err(error) = result {
-                println!("Error: {error}");
+                log::error!("Error: {error}");
             }
+            log::trace!("Data sent! {data:?}");
 
             time::sleep(Duration::from_secs(wait_time as u64)).await;
         }

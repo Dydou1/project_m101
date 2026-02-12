@@ -1,12 +1,17 @@
 procs:
-  build:
-    shell: cargo b
+  # build:
+  #   shell: cargo b
+  #   autostart: false
+  # run:
+  #   shell: cargo r
+  #   autostart: false
+  db:
+    shell: docker compose --profile db up
     autostart: false
-  run:
-    shell: cargo r
-    autostart: false
+    stop:
+      send-keys: ["<C-c>"]
   mqtt:
-    shell: docker compose --profile iot up
+    shell: docker compose --profile mqtt up
     autostart: false
     stop:
       send-keys: ["<C-c>"]

@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/LucasPickering/slumber/refs/tags/v4.3.1/schemas/collection.json
+
+name: API
+
+profiles:
+  docker:
+    name: local
+    data:
+      host: http://localhost:8080
+
+requests:
+  nodes:
+    name: nodes
+    requests:
+      nodes_get:
+        name: get
+        method: GET
+        url: "{{ host }}/api/nodes"
+        # body:
+        #   type: json
+        #   data: { "data": "{{ response('example_get') | jsonpath('$.data') }}" }
