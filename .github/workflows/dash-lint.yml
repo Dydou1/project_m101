@@ -19,6 +19,7 @@ jobs:
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
+        working-directory: ./dash
         with:
           node-version: 18
 
@@ -27,4 +28,5 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npx eslint ./dash --ext .ts,.tsx,.js
+        working-directory: ./dash
+        run: npx eslint .
