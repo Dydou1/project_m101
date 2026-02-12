@@ -22,8 +22,10 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies and run ESLint
+      - name: Install dependencies
         working-directory: ./dash
-        run: |
-          npm ci
-          npm run lint
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: ./dash
+        run: npx eslint . --config eslint.config.cjs
