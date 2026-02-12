@@ -37,3 +37,33 @@ macro_rules! load_var {
             .expect(concat!("`", $var, "` value must be a non-negative integer"))
     };
 }
+
+/// Automatically bubble up an error as a `500`.
+///
+/// # Examples
+///
+/// ```rust
+/// # #[macro_use] extern crate web_test;
+/// # use actix_web::{HttpResponse, Responder};
+/// #[rustfmt::skip]
+/// fn faillible() -> Result<&str, ()> { todo!() }
+///
+/// async fn main() -> impl Responder {
+///     // If `faillible` were to return an `Err`,
+///     // this function would return `HttpResponse::InternalServerError`
+///     let foo = or_fail!(faillible());
+///
+///     HttpResponse::Ok().body(foo)
+/// }
+/// ```
+#[macro_export]
+macro_rules! or_fail {
+    ($e:expr) => {
+        match { $e } {
+            Ok(__val) => __val,
+            Err(__e) => {
+                return actix_web::HttpResponse::InternalServerError().body(__e.to_string());
+            },
+        }
+    };
+}

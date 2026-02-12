@@ -2,7 +2,6 @@ use std::env;
 use std::time::Duration;
 
 use env_logger::Env;
-use log::trace;
 use rumqttc::{AsyncClient, MqttOptions, QoS};
 use tokio::{task, time};
 

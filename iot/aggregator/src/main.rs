@@ -5,7 +5,7 @@ mod models;
 mod mqtt;
 mod nodes;
 
-use std::{env, io};
+use std::{env, io, net::Ipv4Addr};
 
 use actix_cors::Cors;
 use actix_web::{
@@ -49,7 +49,7 @@ async fn main() -> io::Result<()> {
             )
             .configure(configure)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind((Ipv4Addr::new(0, 0, 0, 0), 8080))?
     .run()
     .await
 }
@@ -57,5 +57,6 @@ async fn main() -> io::Result<()> {
 /// Register top-level services
 fn configure(cfg: &mut ServiceConfig) {
     let service = scope("api").configure(nodes::configure);
+
     cfg.service(service);
 }
