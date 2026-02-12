@@ -22,5 +22,8 @@ jobs:
         with:
           node-version: 18
 
-      - name: Go to dash folder
-        run: cd dash && npm ci && npm run lint
+      - name: Install dependencies and run ESLint
+        run: |
+          cd dash
+          npm ci
+          npm run lint
