@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: ["main"]
   schedule:
-    - cron: '37 18 * * 4'
+    - cron: '37 18 * * 4' # Tous les jeudis à 18:37 UTC
 
 jobs:
   lint:
@@ -14,18 +14,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Récupère le code du repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ Installe Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
+      # 3️⃣ Installe les dépendances dans dash/
       - name: Install dependencies
         run: npm ci
         working-directory: ./dash
 
+      # 4️⃣ Lance ESLint via npx (analyse tous les fichiers .ts)
       - name: Run ESLint
-        run: npm run lint
-        working-directory: ./dash
+        run: npx eslint ./dash --ext .ts
+
+      # 5️⃣ (Optionnel) Corrige automatiquement les erreurs ESLint
+      #- name: Run ESLint auto-fix
+      #  run: npx eslint ./dash --ext .ts --fix
