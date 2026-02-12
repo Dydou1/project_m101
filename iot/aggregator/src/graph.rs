@@ -1,6 +1,7 @@
 use std::sync::LazyLock;
 
-pub static GRAPH: LazyLock<[Vec<usize>; 32]> = LazyLock::new(|| {
+/// List of adjacencies for each node in the system
+pub static ADJACENCIES: LazyLock<[Vec<usize>; 32]> = LazyLock::new(|| {
     [
         vec![1, 8], // 0
         vec![0, 2],

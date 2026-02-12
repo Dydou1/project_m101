@@ -215,6 +215,7 @@ dependencies = [
  "chrono",
  "dotenv",
  "env_logger",
+ "log",
  "regex",
  "rumqttc",
  "serde",

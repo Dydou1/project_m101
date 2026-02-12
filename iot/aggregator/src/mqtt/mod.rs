@@ -10,8 +10,6 @@ use crate::db::POOL;
 static TOPIC_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^traffic/(\d+)$").expect("RegEx should be valid"));
 
 pub async fn aggregate() {
-    LazyLock::force(&POOL);
-
     let mqtt_options = {
         let mut mqtt_options = MqttOptions::new("aggregator", "mqtt", 1883);
         mqtt_options
@@ -25,7 +23,7 @@ pub async fn aggregate() {
     let (client, mut event_pool) = AsyncClient::new(mqtt_options, 10);
 
     client
-        .subscribe_many((0..31).map(|i| SubscribeFilter::new(format!("traffic/{i}"), QoS::AtMostOnce)))
+        .subscribe_many((0..32).map(|i| SubscribeFilter::new(format!("traffic/{i}"), QoS::AtMostOnce)))
         .await
         .unwrap();
 
@@ -40,7 +38,8 @@ pub async fn aggregate() {
             continue;
         };
 
-        dbg!(&data.topic);
+        log::trace!("MQTT: {} = {:?}", data.topic, data.payload);
+
         let id: i32 = TOPIC_REGEX
             .captures(&data.topic)
             .expect("RegEx should match")[1]
@@ -51,13 +50,12 @@ pub async fn aggregate() {
 
         let timestamp: NaiveDateTime = Local::now().naive_local();
 
-        dbg!(data);
         let result = query_file!("src/mqtt/update_one.sql", id, avg_speed, timestamp)
             .execute(&mut connection)
             .await;
 
         if let Err(error) = &result {
-            dbg!(&error);
+            log::error!("MQTT error: {error}");
         }
     }
 }

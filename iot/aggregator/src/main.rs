@@ -5,7 +5,7 @@ mod models;
 mod mqtt;
 mod nodes;
 
-use std::io;
+use std::{env, io};
 
 use actix_cors::Cors;
 use actix_web::{
@@ -18,16 +18,23 @@ use tokio::task;
 
 #[actix_web::main]
 async fn main() -> io::Result<()> {
-    let _ = dotenv::dotenv();
+    // We don't care about loading an `.env` file when in a container
+    // As environement variables are passed through the `docker-compose.yaml`
+    if env::var("DOCKER").is_err() && dotenv::dotenv().is_err() {
+        eprintln!("No `.env` file found");
+    };
 
+    // Instantiation of the global logger
     let env = Env::new().filter_or("LOG_LEVEL", "info");
     env_logger::builder()
         .parse_env(env)
         .format_timestamp(None)
         .init();
 
+    // Launch the MQTT receiver
     task::spawn(mqtt::aggregate());
 
+    // Configure and launch the server
     HttpServer::new(|| {
         App::new()
             .wrap(Logger::default())
@@ -47,6 +54,7 @@ async fn main() -> io::Result<()> {
     .await
 }
 
+/// Register top-level services
 fn configure(cfg: &mut ServiceConfig) {
     let service = scope("api").configure(nodes::configure);
     cfg.service(service);
