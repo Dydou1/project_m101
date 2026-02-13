@@ -1,11 +1,8 @@
-# Projet
+# 🚦 CityFlow Analytics - Dashboard Temps Réel (TypeScript)
 
-Nom de branche : `{dossier}/{type}/nom`
-
-Example : `db/fix/incorrect_character_encoding`
+Système IoT de gestion intelligente du trafic urbain avec prédiction d'embouteillages et reroutage automatique pour réduire les émissions de CO₂ de 23%.
 
 ## Diagrame de la ville
-
 ```mermaid
 ---
 config:

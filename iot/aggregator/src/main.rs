@@ -1,35 +1,62 @@
-use std::time::Duration;
+mod db;
+mod graph;
+mod macros;
+mod models;
+mod mqtt;
+mod nodes;
 
-use rumqttc::{AsyncClient, Event, MqttOptions, Packet, QoS, SubscribeFilter};
+use std::{env, io, net::Ipv4Addr};
 
-#[tokio::main]
-async fn main() {
-    println!("hello");
-    let mqtt_options = {
-        let mut mqtt_options = MqttOptions::new("aggregator", "mqtt", 1883);
-        mqtt_options
-            .set_keep_alive(Duration::from_secs(15))
-            .set_clean_session(false)
-            .set_inflight(64)
-            .set_request_channel_capacity(64);
-        mqtt_options
+use actix_cors::Cors;
+use actix_web::{
+    App, HttpServer,
+    middleware::{Logger, NormalizePath},
+    web::{ServiceConfig, scope},
+};
+use env_logger::Env;
+use tokio::task;
+
+#[actix_web::main]
+async fn main() -> io::Result<()> {
+    // We don't care about loading an `.env` file when in a container
+    // As environement variables are passed through the `docker-compose.yaml`
+    if env::var("DOCKER").is_err() && dotenv::dotenv().is_err() {
+        eprintln!("No `.env` file found");
     };
 
-    let (client, mut event_pool) = AsyncClient::new(mqtt_options, 10);
+    // Instantiation of the global logger
+    let env = Env::new().filter_or("LOG_LEVEL", "info");
+    env_logger::builder()
+        .parse_env(env)
+        .format_timestamp(None)
+        .init();
 
-    client
-        .subscribe_many((0..31).map(|i| SubscribeFilter::new(format!("traffic/{i}"), QoS::AtMostOnce)))
-        .await
-        .unwrap();
+    // Launch the MQTT receiver
+    task::spawn(mqtt::aggregate());
 
-    while let Ok(notification) = event_pool.poll().await {
-        let Event::Incoming(Packet::Publish(data)) = notification else {
-            continue;
-        };
+    // Configure and launch the server
+    HttpServer::new(|| {
+        App::new()
+            .wrap(Logger::default())
+            .wrap(NormalizePath::trim())
+            .wrap(
+                Cors::default()
+                    .allow_any_origin()
+                    .allow_any_method()
+                    .allow_any_header()
+                    .supports_credentials()
+                    .max_age(3600 * 8),
+            )
+            .configure(configure)
+    })
+    .bind((Ipv4Addr::new(0, 0, 0, 0), 8080))?
+    .run()
+    .await
+}
 
-        // println!("Notification: {notification:?}");
-        println!("Data: {data:?}");
-        println!("Topic: {:?}", data.topic);
-        println!("Payload: {:?}", data.payload.to_vec());
-    }
+/// Register top-level services
+fn configure(cfg: &mut ServiceConfig) {
+    let service = scope("api").configure(nodes::configure);
+
+    cfg.service(service);
 }

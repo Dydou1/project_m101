@@ -3,303 +3,369 @@ services:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 0
+
+      LOG_LEVEL: info
   sensor-1:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 1
+
+      LOG_LEVEL: info
   sensor-2:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 2
+
+      LOG_LEVEL: info
   sensor-3:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 3
+
+      LOG_LEVEL: info
   sensor-4:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 4
+
+      LOG_LEVEL: info
   sensor-5:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 5
+
+      LOG_LEVEL: info
   sensor-6:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 6
+
+      LOG_LEVEL: info
   sensor-7:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 7
+
+      LOG_LEVEL: info
   sensor-8:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 8
+
+      LOG_LEVEL: info
   sensor-9:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 9
+
+      LOG_LEVEL: info
   sensor-10:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 10
+
+      LOG_LEVEL: info
   sensor-11:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 11
+
+      LOG_LEVEL: info
   sensor-12:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 12
+
+      LOG_LEVEL: info
   sensor-13:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 13
+
+      LOG_LEVEL: info
   sensor-14:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 14
+
+      LOG_LEVEL: info
   sensor-15:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 15
+
+      LOG_LEVEL: info
   sensor-16:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 16
+
+      LOG_LEVEL: info
   sensor-17:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 17
+
+      LOG_LEVEL: info
   sensor-18:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 18
+
+      LOG_LEVEL: info
   sensor-19:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 19
+
+      LOG_LEVEL: info
   sensor-20:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 20
+
+      LOG_LEVEL: info
   sensor-21:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 21
+
+      LOG_LEVEL: info
   sensor-22:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 22
+
+      LOG_LEVEL: info
   sensor-23:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 23
+
+      LOG_LEVEL: info
   sensor-24:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 24
+
+      LOG_LEVEL: info
   sensor-25:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 25
+
+      LOG_LEVEL: info
   sensor-26:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 26
+
+      LOG_LEVEL: info
   sensor-27:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 27
+
+      LOG_LEVEL: info
   sensor-28:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 28
+
+      LOG_LEVEL: info
   sensor-29:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 29
+
+      LOG_LEVEL: info
   sensor-30:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 30
+
+      LOG_LEVEL: info
   sensor-31:
     build: sensor
     depends_on:
     - mqtt
-    - aggregator
     profiles:
-      - iot
+      - full
     environment:
       UNIQUE_ID: 31
+
+      LOG_LEVEL: info
+
   aggregator:
     build: aggregator
+    ports:
+      - 8080:8080
     depends_on:
       - mqtt
+      - db
     profiles:
-      - iot
+      - full
+    environment:
+      DOCKER: true
+
+      LOG_LEVEL: info
+      
+      SENSOR_NUMBER: 32
+      
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+
+      DATABASE_URL: postgres://postgres:password@db
+
   mqtt:
     image: bytebeamio/rumqttd
     ports:
       - 1883:1883
       - 1884:1884
     profiles:
-      - iot
+      - full
+      - mqtt
+
+  db:
+    image: dhi.io/postgres:18-alpine3.22-dev
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 5432:5432
+    profiles:
+      - full
+      - db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped  
 
 networks:
   default:
+
+volumes:
+  postgres_data:
