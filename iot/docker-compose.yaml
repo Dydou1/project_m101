@@ -334,6 +334,8 @@ services:
 
       LOG_LEVEL: info
       
+      SENSOR_NUMBER: 32
+      
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
 
