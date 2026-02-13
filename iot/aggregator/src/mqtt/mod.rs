@@ -5,11 +5,14 @@ use regex::Regex;
 use rumqttc::{AsyncClient, Event, MqttOptions, Packet, QoS, SubscribeFilter};
 use sqlx::query_file;
 
-use crate::db::POOL;
+use crate::{db::POOL, load_var};
 
 static TOPIC_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^traffic/(\d+)$").expect("RegEx should be valid"));
 
+/// Handle the entire communication process with the MQTT broker
+/// Data is gathered from all the sensors' topics, and sent to the DB
 pub async fn aggregate() {
+    // Configure and launch the MQTT client
     let mqtt_options = {
         let mut mqtt_options = MqttOptions::new("aggregator", "mqtt", 1883);
         mqtt_options
@@ -19,20 +22,23 @@ pub async fn aggregate() {
             .set_request_channel_capacity(64);
         mqtt_options
     };
-
     let (client, mut event_pool) = AsyncClient::new(mqtt_options, 10);
 
+    // Subscribe to the topic of every sensor
+    let sensor_number = load_var!("SENSOR_NUMBER" => uint);
     client
-        .subscribe_many((0..32).map(|i| SubscribeFilter::new(format!("traffic/{i}"), QoS::AtMostOnce)))
+        .subscribe_many((0u8..sensor_number).map(|i| SubscribeFilter::new(format!("traffic/{i}"), QoS::AtMostOnce)))
         .await
         .unwrap();
 
+    // Acquire a DB connection from the pool, for reuse
     let mut connection = POOL
         .acquire()
         .await
         .expect("DB should be accessible")
         .detach();
 
+    // Handle messages from the MQTT broker
     while let Ok(event) = event_pool.poll().await {
         let Event::Incoming(Packet::Publish(data)) = event else {
             continue;
