@@ -43,7 +43,7 @@ async fn send_loop(client: AsyncClient, unique_id: u8) {
 
     loop {
         let avg_speed: u32 = ((unique_id as u32) * 17 % 43) + 10;
-        let data = vec![avg_speed as u8];
+        let data = vec![unique_id, avg_speed as u8];
 
         // While a performance loss, data must be cloned to be able to be logged afterwards
         let result = client
