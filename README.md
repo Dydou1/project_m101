@@ -115,7 +115,7 @@ cd project_m101
 
 ### Installation des outils
 
-## npm 
+### npm 
 Pour utiliser les commandes npm, il faut installer npm avec les commandes suivantes :
 ```bash
 # permet d'installer nodejs sur notre machine
@@ -135,7 +135,7 @@ une fois ça terminer retourner a la racine
 ```bash
 cd ..
 ```
-## 🐳Docker
+### 🐳Docker
 
 Pour installer Docker, faites les commandes suivantes :
 
@@ -168,7 +168,7 @@ sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ``` 
 
-## Rust
+### Rust
 Installation de Rust :
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh 
