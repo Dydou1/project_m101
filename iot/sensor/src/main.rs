@@ -54,7 +54,6 @@ async fn send_loop(client: AsyncClient, unique_id: u8) {
         }
         log::trace!("Data sent: {data:?}");
 
-        // Wait before sending new data
-        time::sleep(Duration::from_secs(24_u64.staturing_add_signed(random_range((-4)..=4))));
+        // Wait before sending new data time::sleep(Duration::from_secs(24_u64.saturing_add_signed(random_range((-4)..=4)));
     }
 }
